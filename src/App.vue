@@ -1,0 +1,84 @@
+<template>
+  <NavBar />
+  <router-view/>
+</template>
+<script lang="ts">
+import NavBar from '@/components/NavigationBarComponent.vue';
+
+export default {
+  components: {
+    NavBar,
+  },
+};
+</script>
+<style lang="scss">
+$textColor: rgb(74, 92, 78);
+
+body{
+  background-color:rgb(200, 238, 206);
+  margin:0;
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.router{
+  text-decoration:none;
+  color:$textColor
+}
+.router:focus,
+.router:active,
+.router:visited{
+  color:$textColor
+}
+button {
+    cursor:pointer;
+    border:none;
+    font-size:18px;
+    padding: 1em;
+    width:80%;
+    margin:1em;
+    background-color: #42b983;
+    color: white;
+    outline:none;
+    resize:none;
+}
+button:hover{
+  background-color: #4fdb9c;
+  color: White
+}
+
+#nav + div {
+  margin-top:80px;
+}
+hr.divider{
+  height:2px;
+  margin:0px 5%;
+  background-color:rgba(0, 0, 0, 0.068);
+  border:0;
+}
+.message {
+  font-size:18px;
+  font-weight: bold;
+  margin:10px;
+}
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.185);
+  height:100%;
+  width:100%;
+  top: 50%;
+  left: 50%;
+  /* margin:1em; */
+  padding:1em;
+  margin-top: -30%; /* Negative half of height. */
+  margin-left: -50%; /* Negative half of width. */
+  position:fixed;
+}
+.p-dialog{
+  margin:5em;
+}
+</style>
