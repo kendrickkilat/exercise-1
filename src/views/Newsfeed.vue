@@ -6,7 +6,7 @@
     <div class = "posts">
       <div v-for="post in posts" v-bind:key="post.id" class = "post">
          <Post :post = "post"/>
-    </div>
+      </div>
     </div>
 
   </div>

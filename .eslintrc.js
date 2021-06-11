@@ -24,6 +24,13 @@ module.exports = {
       // vue: 'never'
     }],
     "linebreak-style": 0,
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ]
   },
   settings: {
     'import/resolver': {

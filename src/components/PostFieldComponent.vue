@@ -1,23 +1,25 @@
 <template>
   <div class="input-field">
-    <input id = "title" v-model="title" placeholder="Title">
-    <br />
-    <textarea
+    <input id="title" v-model="title" placeholder="Title" /><br /><textarea
       id="content"
       v-model="content"
       placeholder="What's on your mind?"
-    ></textarea>
-    <br />
-    <button @click="post" class="submit-button">SUBMIT</button>
+    ></textarea
+    ><br /><button class="submit-button" @click="post">SUBMIT</button
+    ><Toast></Toast>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import PostService from '@/services/PostService';
+import Toast from 'primevue/toast';
 
 export default defineComponent({
   name: 'CreatePost',
+  components: {
+    Toast,
+  },
   data() {
     return {
       title: '',
@@ -27,6 +29,7 @@ export default defineComponent({
   methods: {
     post() {
       const test = {
+        id: 1,
         content: this.content,
         title: this.title,
         author: 'John Doe',
@@ -35,7 +38,8 @@ export default defineComponent({
       PostService.addPost(test)
         .then((res) => {
           console.log(res.status);
-          this.$router.go(0);
+          this.$toast.add({ severity: 'success', summary: 'Submitted', detail: 'Post Successfully Submitted' });
+          // this.$router.go(0);
         });
     },
   },
