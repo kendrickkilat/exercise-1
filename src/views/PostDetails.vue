@@ -13,7 +13,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
 
@@ -27,12 +27,16 @@ export default defineComponent({
   },
   setup() {
     const post = ref<IPost>();
-    return { post };
-  },
-  computed: {
-    toNewsFeed() {
-      return { name: 'NewsFeed' };
-    },
+    const toNewsFeed = computed(() => ({ name: 'NewsFeed' }));
+
+    function readableDate(temp):string {
+      console.log(temp);
+      const dateTime = new Date(temp);
+      const date = `${dateTime.getMonth() + 1}/${dateTime.getDate()}/${dateTime.getFullYear()}`;
+      const altTime = dateTime.toLocaleTimeString();
+      return `${date} | ${altTime}`;
+    }
+    return { post, toNewsFeed, readableDate };
   },
   created() {
     // console.log(this.$route.query.post);
@@ -44,15 +48,6 @@ export default defineComponent({
       .catch((e) => {
         console.log(e);
       });
-  },
-  methods: {
-    readableDate(temp) {
-      console.log(temp);
-      const dateTime = new Date(temp);
-      const date = `${dateTime.getMonth() + 1}/${dateTime.getDate()}/${dateTime.getFullYear()}`;
-      const altTime = dateTime.toLocaleTimeString();
-      return `${date} | ${altTime}`;
-    },
   },
 });
 </script>

@@ -1,13 +1,16 @@
 <template>
   <NavBar />
+  <Toast></Toast>
   <router-view/>
 </template>
 <script lang="ts">
 import NavBar from '@/components/NavigationBarComponent.vue';
+import Toast from 'primevue/toast';
 
 export default {
   components: {
     NavBar,
+    Toast,
   },
 };
 </script>
@@ -80,5 +83,16 @@ hr.divider{
 }
 .p-dialog{
   margin:5em;
+  min-width:350px;
+}
+.p-dialog
+.p-dialog-content{
+  min-height:200px;
+  padding:1.5em;
+}
+.p-dialog
+.p-dialog-header, .p-dialog .p-dialog-footer{
+  background:rgb(200, 238, 206);
+  padding:1em;
 }
 </style>

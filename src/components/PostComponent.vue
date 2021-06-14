@@ -3,22 +3,22 @@
     <!-- <div v-if = "isShown">
       <PostDetails :id = post.id />
     </div> -->
-    <!-- <Dialog v-model:visible="isShown" modal=true>
+    <Dialog class = "detail-dialog" v-model:visible="isShown" modal=true>
       <template #header>
-        <h3>{{post.title}} - {{readableDate(post.date)}}</h3>
+        <h3>{{post.title}}</h3>
       </template>
         {{post.content}}
-    </Dialog> -->
-    <router-link
+        <template #footer>
+          {{readableDate(post.date)}} <br />
+        </template>
+    </Dialog>
+    <!-- <router-link
       :to="{ name: 'PostDetails', params: { id: post.id } }"
       class="router"
-    >
-    <!-- <div @click = "showModal()"> -->
+    > -->
+    <div @click = "showModal()">
       <div class="post-item post-title">
         <!-- {{ post.title }} -->
-        <span class="author-icon grid-item">
-          <img src="../assets/logo.png" alt="" height="30" />
-        </span>
         <span class="post-author grid-item">
           {{ post.title }}
           <br />
@@ -45,50 +45,50 @@
       <div class="post-item post-content">
         {{ post.content }}
       </div>
-      <!-- </div> -->
-    </router-link>
+      </div>
+    <!-- </router-link> -->
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
 // import PostDetails from '@/components/PostDetailComponent.vue';
 
 export default defineComponent({
   name: 'Post',
-  data() {
-    return {
-      isShown: false,
-    };
-  },
-  components: {
-    // PostDetails,
-  },
-  props: {
-    post: {
-      type: Object as PropType <IPost>,
-      required: true,
-    },
-  },
-  methods: {
-    deleteItem(id) {
+  setup() {
+    const isShown = ref(false);
+
+    function deleteItem(id):void {
       PostService.deletePost(id)
         .then((res) => {
           console.log(res.status);
-          this.$router.go(0);// specify name
+          // $router.go(0);// specify name
         });
-    },
-    readableDate(temp) {
+    }
+
+    function readableDate(temp):string {
       console.log(temp);
       const dateTime = new Date(temp);
       const date = `${dateTime.getMonth() + 1}/${dateTime.getDate()}/${dateTime.getFullYear()}`;
       const altTime = dateTime.toLocaleTimeString();
       return `${date} | ${altTime}`;
-    },
-    showModal() {
-      this.isShown = true;
+    }
+
+    function showModal():void {
+      isShown.value = true;
+    }
+
+    return {
+      isShown, deleteItem, readableDate, showModal,
+    };
+  },
+  props: {
+    post: {
+      type: Object as PropType <IPost>,
+      required: true,
     },
   },
 });
@@ -103,7 +103,7 @@ export default defineComponent({
 }
 .post-title{
   display:grid;
-  grid-template-columns:5% 75% 20%;
+  grid-template-columns:80% 20%;
   grid-template-rows: 25% 25% 25% 25%;
   padding:0.5em 0;
   font-size:24px;
@@ -159,5 +159,8 @@ export default defineComponent({
 .date {
   color:rgb(154, 175, 172);
   font-size:14px
+}
+.p-dialog{
+  min-width:700px;
 }
 </style>
