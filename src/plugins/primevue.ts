@@ -13,7 +13,6 @@ import { App } from 'vue';
 export default {
   install: (app:App):void => {
     app.use(PrimeVue);
-    app.use(PrimeVue);
     app.use(ToastService);
 
     app.component('Dialog', Dialog);
