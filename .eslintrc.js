@@ -30,7 +30,9 @@ module.exports = {
       {
         "allowExpressions": true
       }
-    ]
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   },
   settings: {
     'import/resolver': {

@@ -1,24 +1,32 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
+// enum RouteNames {
+//   Home = 'Home',
+//   Newsfeed = 'Newsfeed',
+//   PDetails = 'PostDetails',
+//   PVC = 'PrimeVueComponent',
+// }
+import RouteNames from '@/enums/routenames';
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
+    name: RouteNames.Home,
     component: () => import('../views/Home.vue'),
   },
   {
     path: '/prime-vue-test',
-    name: 'PrimeVueComponents',
+    name: RouteNames.PVC,
     component: () => import('../views/PrimeVueComponents.vue'),
   },
   {
     path: '/newsfeed',
-    name: 'NewsFeed',
+    name: RouteNames.Newsfeed,
     component: () => import('../views/Newsfeed.vue'),
   },
   {
     path: '/newsfeed/:id',
-    name: 'PostDetails',
+    name: RouteNames.PDetails,
     props: true,
     component: () => import('../views/PostDetails.vue'),
   },

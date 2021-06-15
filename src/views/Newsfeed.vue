@@ -1,6 +1,6 @@
 <template>
   <div class="newsfeed">
-    <Toast></Toast>
+    <!-- <Toast></Toast> -->
     <!-- INPUT FIELDS -->
     <div class="input-field">
       <input id="title" v-model="title" placeholder="Title" />
@@ -26,7 +26,7 @@ import Post from '@/components/PostComponent.vue';
 // import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
 import { useToast } from 'primevue/usetoast';
-import Toast from 'primevue/toast';
+// import Toast from 'primevue/toast';
 
 export default defineComponent({
   // inject: ['localPosts'],
@@ -34,7 +34,7 @@ export default defineComponent({
   components: {
     // PostField,
     Post,
-    Toast,
+    // Toast,
   },
   setup() {
     const toast = useToast();
@@ -42,7 +42,7 @@ export default defineComponent({
     const content = ref('');
     const posts = ref<IPost[]>([
       {
-        content: 'Test Content',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, ipsum? Similique, facilis! Laborum dignissimos ex adipisci recusandae quibusdam corporis, praesentium veniam. Saepe, consectetur quam. Molestias soluta inventore doloremque ullam eos? "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."',
         title: 'Test Title',
         author: 'John Doe',
         date: 1623584041048,
@@ -50,34 +50,37 @@ export default defineComponent({
       },
     ]);
 
+    function instantiateToast(data): void {
+      toast.add(data);
+    }
+
     function post(): void {
-      const test = {
-        content: content.value,
-        title: title.value,
-        author: 'John Doe',
-        date: Date.now(),
-        id: Math.random(),
-      };
-      posts.value.unshift(test);
-      toast.add({
-        severity: 'success', summary: 'Post Succesfully Added!', detail: `${title.value} Successfully Added`, life: 3000,
-      });
-      title.value = '';
-      content.value = '';
+      let msg = {};
+      if (title.value === '' || content.value === '') {
+        msg = {
+          severity: 'error', summary: 'Error while Submitting Form', detail: 'Title and/or Content is empty', life: 3000,
+        };
+      } else {
+        const test = {
+          content: content.value,
+          title: title.value,
+          author: 'John Doe',
+          date: Date.now(),
+          id: Math.random(),
+        };
+        posts.value.unshift(test);
+        title.value = '';
+        content.value = '';
+
+        msg = {
+          severity: 'success', summary: 'Post Succesfully Added!', detail: `${title.value} Successfully Added`, life: 3000,
+        };
+      }
+      instantiateToast(msg);
     }
     return {
-      title, content, posts, post,
+      title, content, posts, post, instantiateToast,
     };
-  },
-  created() {
-    // PostService.getPosts()
-    //   .then((res) => {
-    //     console.log(res.status);
-    //     this.posts = res.data;
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
   },
 });
 </script>
