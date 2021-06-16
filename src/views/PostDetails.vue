@@ -36,12 +36,11 @@ export default defineComponent({
     console.log(props);
     console.log(staticPosts);
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    function findPost() {
+    function findPost():IPost {
       return staticPosts.find((item) => {
         console.log(item.id, Number(props.id));
         return item.id === Number(props.id);
-      });
+      }) as IPost;
     }
     post.value = findPost();
     console.log(post.value);
