@@ -3,7 +3,7 @@
     <!-- <div v-if = "isShown">
       <PostDetails :id = post.id />
     </div> -->
-    <Dialog class = "detail-dialog" v-model:visible="isShown" modal=true>
+    <!-- <Dialog class = "detail-dialog" v-model:visible="isShown" modal=true>
       <template #header>
         <h3>{{post.title}}</h3>
       </template>
@@ -11,12 +11,12 @@
         <template #footer>
           {{readableDate(post.date)}} <br />
         </template>
-    </Dialog>
-    <!-- <router-link
+    </Dialog> -->
+    <router-link
       :to="{ name: 'PostDetails', params: { id: post.id } }"
       class="router"
-    > -->
-    <div @click = "showModal()">
+    >
+    <!-- <div @click = "showModal()"> -->
       <div class="post-item post-title">
         <!-- {{ post.title }} -->
         <span class="post-author grid-item">
@@ -45,28 +45,27 @@
       <div class="post-item post-content">
         {{ post.content }}
       </div>
-      </div>
-    <!-- </router-link> -->
+      <!-- </div> -->
+    </router-link>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
-import PostService from '@/services/PostService';
+// import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
+// import posts from '@/localdata/staticdata';
 // import PostDetails from '@/components/PostDetailComponent.vue';
 
 export default defineComponent({
   name: 'Post',
-  setup() {
+  setup(props, context) {
     const isShown = ref(false);
 
     function deleteItem(id):void {
-      PostService.deletePost(id)
-        .then((res) => {
-          console.log(res.status);
-          // $router.go(0);// specify name
-        });
+      console.log(id);
+      context.emit('delete-post', id);
+    //  posts = posts.find((i) => i.id !== id);
     }
 
     function readableDate(temp):string {

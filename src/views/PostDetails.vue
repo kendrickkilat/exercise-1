@@ -3,7 +3,7 @@
     <router-link class ="router" :to = "toNewsFeed">Back to Newsfeed</router-link>
     <div class="post-item post-title">
       <!-- {{post.title}} -->
-      <span class = "post-author">{{post.author}}</span>
+      <span class = "post-author">{{post.title}} by {{post.author}}</span>
       <br />
       <span class = "date">{{readableDate(post.date)}}</span>
       </div>
@@ -13,22 +13,38 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
-import PostService from '@/services/PostService';
+import {
+  computed, defineComponent, PropType, ref,
+} from 'vue';
+// import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
+import staticPosts from '@/localdata/staticdata';
+import rn from '@/enums/routenames';
 
 export default defineComponent({
   name: 'PostDetails',
   props: {
     id: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const post = ref<IPost>();
-    const toNewsFeed = computed(() => ({ name: 'NewsFeed' }));
+    const toNewsFeed = computed(() => ({ name: rn.Newsfeed }));
+    console.log(typeof props.id, props.id);
+    console.log(props);
+    console.log(staticPosts);
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    function findPost() {
+      return staticPosts.find((item) => {
+        console.log(item.id, Number(props.id));
+        return item.id === Number(props.id);
+      });
+    }
+    post.value = findPost();
+    console.log(post.value);
     function readableDate(temp):string {
       console.log(temp);
       const dateTime = new Date(temp);
@@ -36,19 +52,21 @@ export default defineComponent({
       const altTime = dateTime.toLocaleTimeString();
       return `${date} | ${altTime}`;
     }
-    return { post, toNewsFeed, readableDate };
+    return {
+      post, toNewsFeed, readableDate, findPost,
+    };
   },
-  created() {
-    // console.log(this.$route.query.post);
-    PostService.getPost(this.id)
-      .then((res) => {
-        console.log(res.status);
-        [this.post] = res.data;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  },
+  // created() {
+  //   // console.log(this.$route.query.post);
+  //   PostService.getPost(this.id)
+  //     .then((res) => {
+  //       console.log(res.status);
+  //       [this.post] = res.data;
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // },
 });
 </script>
 <style scoped>

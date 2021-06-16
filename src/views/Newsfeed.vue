@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="newsfeed">
     <!-- <Toast></Toast> -->
@@ -14,7 +15,7 @@
     <div v-if="posts == null || posts.length == 0" class="message">No Posts...yet</div>
     <div class="posts">
       <div v-for="post in posts" v-bind:key="post.id" class="post">
-        <Post :post="post" />
+        <Post :post="post" @delete-post="deletePost" />
       </div>
     </div>
   </div>
@@ -27,6 +28,7 @@ import Post from '@/components/PostComponent.vue';
 import { IPost } from '@/Interfaces/post';
 import { useToast } from 'primevue/usetoast';
 // import Toast from 'primevue/toast';
+import staticPosts from '@/localdata/staticdata';
 
 export default defineComponent({
   // inject: ['localPosts'],
@@ -40,15 +42,19 @@ export default defineComponent({
     const toast = useToast();
     const title = ref('');
     const content = ref('');
-    const posts = ref<IPost[]>([
-      {
-        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, ipsum? Similique, facilis! Laborum dignissimos ex adipisci recusandae quibusdam corporis, praesentium veniam. Saepe, consectetur quam. Molestias soluta inventore doloremque ullam eos? "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."',
-        title: 'Test Title',
-        author: 'John Doe',
-        date: 1623584041048,
-        id: 1,
-      },
-    ]);
+    const posts = ref<IPost[]>(staticPosts);
+
+    function deletePost(value): void {
+      console.log('emit: ', value, posts.value);
+      posts.value.forEach((item, index) => {
+        console.log(item, index);
+        if (item.id === value) {
+          console.log('id', item.id, 'item index', index, 'value: ', value);
+          posts.value.splice(index, 1);
+        }
+        console.log(posts.value);
+      });
+    }
 
     function instantiateToast(data): void {
       toast.add(data);
@@ -61,12 +67,14 @@ export default defineComponent({
           severity: 'error', summary: 'Error while Submitting Form', detail: 'Title and/or Content is empty', life: 3000,
         };
       } else {
+        console.log('posts:length: ', posts.value.length);
+        const len = posts.value.length;
         const test = {
           content: content.value,
           title: title.value,
-          author: 'John Doe',
+          author: 'Kendrick Kilat',
           date: Date.now(),
-          id: Math.random(),
+          id: len === 0 ? len : len + 1,
         };
         posts.value.unshift(test);
         title.value = '';
@@ -79,7 +87,7 @@ export default defineComponent({
       instantiateToast(msg);
     }
     return {
-      title, content, posts, post, instantiateToast,
+      title, content, posts, post, instantiateToast, deletePost,
     };
   },
 });

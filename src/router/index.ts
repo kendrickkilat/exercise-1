@@ -1,11 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-// enum RouteNames {
-//   Home = 'Home',
-//   Newsfeed = 'Newsfeed',
-//   PDetails = 'PostDetails',
-//   PVC = 'PrimeVueComponent',
-// }
 import RouteNames from '@/enums/routenames';
 
 const routes: Array<RouteRecordRaw> = [
