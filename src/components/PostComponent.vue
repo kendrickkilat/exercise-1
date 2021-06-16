@@ -32,14 +32,6 @@
           >
             X
           </button>
-          <!-- <button
-            disabled
-            class="edit-button"
-            v-on:click.prevent
-            @click="deleteItem(post.id)"
-          >
-            Edit
-          </button> -->
         </div>
       </div>
       <div class="post-item post-content">
@@ -54,8 +46,6 @@
 import { defineComponent, PropType, ref } from 'vue';
 // import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
-// import posts from '@/localdata/staticdata';
-// import PostDetails from '@/components/PostDetailComponent.vue';
 
 export default defineComponent({
   name: 'Post',

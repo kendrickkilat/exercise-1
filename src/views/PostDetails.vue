@@ -55,17 +55,6 @@ export default defineComponent({
       post, toNewsFeed, readableDate, findPost,
     };
   },
-  // created() {
-  //   // console.log(this.$route.query.post);
-  //   PostService.getPost(this.id)
-  //     .then((res) => {
-  //       console.log(res.status);
-  //       [this.post] = res.data;
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // },
 });
 </script>
 <style scoped>
