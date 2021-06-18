@@ -24,13 +24,8 @@ module.exports = {
       // vue: 'never'
     }],
     "linebreak-style": 0,
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-function-return-type": [
-      "error",
-      {
-        "allowExpressions": true
-      }
-    ],
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"]
   },
@@ -42,11 +37,11 @@ module.exports = {
     },
   },
   "overrides": [
-    {
+      {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": ["error"]
+        // "@typescript-eslint/explicit-function-return-type": ["error"]
       }
     }
   ]

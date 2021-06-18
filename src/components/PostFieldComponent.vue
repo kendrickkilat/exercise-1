@@ -4,42 +4,31 @@
     <br />
     <textarea id="content" v-model="content" placeholder="What's on your mind?"></textarea>
     <br />
-    <button class="submit-button" @click="post">SUBMIT</button>
-    <Toast></Toast>
+    <button class="submit-button" @click="addPost">SUBMIT</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import PostService from '@/services/PostService';
-import Toast from 'primevue/toast';
-// import ToastService from 'primevue/toastservice';
+import { defineComponent } from 'vue';
+// import PostService from '@/services/PostService';
+import usePostSpace from '@/use/post-space';
 
 export default defineComponent({
   name: 'CreatePost',
-  components: {
-    Toast,
-  },
   setup() {
-    const title = ref('');
-    const content = ref('');
+    const {
+      content,
+      title,
+      addPost,
+      editPost,
+    } = usePostSpace();
 
-    function post():void {
-      const test = {
-        content: content.value,
-        title: title.value,
-        author: 'John Doe',
-        date: Date.now(),
-      };
-      PostService.addPost(test)
-        .then((res) => {
-          console.log(res.status);
-          // Toast.add
-          // ({ severity: 'success', summary: 'Submitted', detail: 'Post Successfully Submitted' });
-          // this.$router.go(0);
-        });
-    }
-    return { title, content, post };
+    return {
+      content,
+      title,
+      addPost,
+      editPost,
+    };
   },
 });
 </script>

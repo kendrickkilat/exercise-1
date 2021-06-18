@@ -1,94 +1,42 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="newsfeed">
     <!-- <Toast></Toast> -->
     <!-- INPUT FIELDS -->
-    <div class="input-field">
-      <input id="title" v-model="title" placeholder="Title" />
-      <br />
-      <textarea id="content" v-model="content" placeholder="What's on your mind?"></textarea>
-      <br />
-      <button class="submit-button" @click="post">SUBMIT</button>
-    </div>
+    <PostField :editID="editID"></PostField>
     <!-- LIST -->
     <hr class="divider" />
     <div v-if="posts == null || posts.length == 0" class="message">No Posts...yet</div>
     <div class="posts">
       <div v-for="post in posts" v-bind:key="post.id" class="post">
-        <Post :post="post" @delete-post="deletePost" />
+        <Post :post="post" @edit-post="setEditID"/>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-// import PostField from '@/components/PostFieldComponent.vue'; // @ is an alias to /src
+import PostField from '@/components/PostFieldComponent.vue'; // @ is an alias to /src
 import Post from '@/components/PostComponent.vue';
-// import PostService from '@/services/PostService';
-import { IPost } from '@/Interfaces/post';
-import { useToast } from 'primevue/usetoast';
-// import Toast from 'primevue/toast';
-import staticPosts from '@/localdata/staticdata';
+import usePostSpace from '@/use/post-space';
 
 export default defineComponent({
   // inject: ['localPosts'],
   name: 'Home',
   components: {
-    // PostField,
+    PostField,
     Post,
     // Toast,
   },
   setup() {
-    const toast = useToast();
-    const title = ref('');
-    const content = ref('');
-    const posts = ref<IPost[]>(staticPosts);
+    const { posts } = usePostSpace();
+    const editID = ref(0);
 
-    function deletePost(value): void {
-      console.log('emit: ', value, posts.value);
-      posts.value.forEach((item, index) => {
-        console.log(item, index);
-        if (item.id === value) {
-          console.log('id', item.id, 'item index', index, 'value: ', value);
-          posts.value.splice(index, 1);
-        }
-        console.log(posts.value);
-      });
+    function setEditID(id) {
+      console.log('setEditID entered', id);
+      editID.value = id;
     }
-
-    function instantiateToast(data): void {
-      toast.add(data);
-    }
-
-    function post(): void {
-      let msg = {};
-      if (title.value === '' || content.value === '') {
-        msg = {
-          severity: 'error', summary: 'Error while Submitting Form', detail: 'Title and/or Content is empty', life: 3000,
-        };
-      } else {
-        console.log('posts:length: ', posts.value.length);
-        const len = posts.value.length;
-        const test = {
-          content: content.value,
-          title: title.value,
-          author: 'Kendrick Kilat',
-          date: Date.now(),
-          id: len === 0 ? len : len + 1,
-        };
-        posts.value.unshift(test);
-        title.value = '';
-        content.value = '';
-
-        msg = {
-          severity: 'success', summary: 'Post Succesfully Added!', detail: `${title.value} Successfully Added`, life: 3000,
-        };
-      }
-      instantiateToast(msg);
-    }
-    return {
-      title, content, posts, post, instantiateToast, deletePost,
-    };
+    // provide('inputs', title.value);
+    return { posts, setEditID, editID };
   },
 });
 </script>

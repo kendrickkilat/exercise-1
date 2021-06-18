@@ -29,24 +29,31 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { useToast } from 'primevue/usetoast';
 
 export default defineComponent({
   name: 'PrimeVueComponents',
-  data() {
+  setup() {
+    const content = ref(null);
+    const display = ref(false);
+    const title = ref(null);
+    const sideBarVisible = ref(false);
+    const toast = useToast();
+
+    function submit():void {
+      display.value = true;
+      toast.add({ severity: 'success', summary: 'Submitted', detail: 'Post Successfully Submitted' });
+    }
+
     return {
-      content: null,
-      display: false,
-      title: null,
-      sideBarVisible: false,
+      content,
+      display,
+      title,
+      sideBarVisible,
+      toast,
+      submit,
     };
-  },
-  methods: {
-    submit() {
-      this.display = true;
-      this.$toast.add({ severity: 'success', summary: 'Submitted', detail: 'Post Successfully Submitted' });
-      // this.$router.go(0);
-    },
   },
   components: {
   },

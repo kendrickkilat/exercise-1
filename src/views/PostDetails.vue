@@ -18,8 +18,8 @@ import {
 } from 'vue';
 // import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
-import staticPosts from '@/localdata/staticdata';
 import rn from '@/enums/routenames';
+import usePostSpace from '@/use/post-space';
 
 export default defineComponent({
   name: 'PostDetails',
@@ -32,18 +32,10 @@ export default defineComponent({
   setup(props) {
     const post = ref<IPost>();
     const toNewsFeed = computed(() => ({ name: rn.Newsfeed }));
-    console.log(typeof props.id, props.id);
-    console.log(props);
-    console.log(staticPosts);
+    const { findPost } = usePostSpace();
 
-    function findPost():IPost {
-      return staticPosts.find((item) => {
-        console.log(item.id, Number(props.id));
-        return item.id === Number(props.id);
-      }) as IPost;
-    }
-    post.value = findPost();
-    console.log(post.value);
+    post.value = findPost(props);
+
     function readableDate(temp):string {
       console.log(temp);
       const dateTime = new Date(temp);
