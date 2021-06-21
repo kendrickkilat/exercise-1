@@ -1,10 +1,13 @@
 <template>
   <div class="input-field">
-    <input id="title" v-model="title" placeholder="Title" />
+    <InputText v-model="title" placeholder="Title" v-on:click.prevent></InputText>
     <br />
-    <textarea id="content" v-model="content" placeholder="What's on your mind?"></textarea>
+    <TextArea v-model="content" rows="4" placeholder="Whats on your mind"
+          v-on:click.prevent></TextArea>
     <br />
-    <button class="submit-button" @click="addPost">SUBMIT</button>
+    <div class = "p-fluid p-grid">
+      <Button @click="addPost" label="SUBMIT" class = "submit-button"></Button>
+    </div>
   </div>
 </template>
 
@@ -12,9 +15,17 @@
 import { defineComponent } from 'vue';
 // import PostService from '@/services/PostService';
 import usePostSpace from '@/use/post-space';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import TextArea from 'primevue/textarea';
 
 export default defineComponent({
   name: 'CreatePost',
+  components: {
+    Button,
+    InputText,
+    TextArea,
+  },
   setup() {
     const {
       content,
@@ -34,8 +45,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .input-field input,
-.input-field textarea,
-button {
+.input-field textarea{
   border: none;
   font-size: 18px;
   padding: 1em;
@@ -46,12 +56,9 @@ button {
   resize: none;
 }
 .submit-button {
-  background-color: #42b983;
-  color: White;
-}
-.submit-button:hover {
-  background-color: #4fdb9c;
-  color: White;
+  margin:1em 4em;
+  font-size:18px;
+  padding: 0.5em 0
 }
 input,
 textarea {

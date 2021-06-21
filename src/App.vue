@@ -38,23 +38,25 @@ body{
 .router:visited{
   color:$textColor
 }
-button {
-    cursor:pointer;
-    border:none;
-    font-size:18px;
-    padding: 1em;
-    width:80%;
-    margin:1em;
-    background-color: #42b983;
-    color: white;
-    outline:none;
-    resize:none;
+// button {
+//     cursor:pointer;
+//     border:none;
+//     font-size:18px;
+//     padding: 1em;
+//     width:80%;
+//     margin:1em;
+//     background-color: #42b983;
+//     color: white;
+//     outline:none;
+//     resize:none;
+// }
+// button:hover{
+//   background-color: #4fdb9c;
+//   color: White
+// }
+.p-button{
+  margin:1em 1em;
 }
-button:hover{
-  background-color: #4fdb9c;
-  color: White
-}
-
 #nav + div {
   margin-top:80px;
 }
@@ -94,5 +96,22 @@ hr.divider{
 .p-dialog-header, .p-dialog .p-dialog-footer{
   background:rgb(200, 238, 206);
   padding:1em;
+}
+
+.posts .p-card-content {
+  display: -webkit-box;
+  padding: 1em;
+  overflow: hidden;
+  height: 125px;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.p-card-footer Button{
+  width: 10%;
+}
+
+.p-inputtext{
+  margin:8px!important;
 }
 </style>

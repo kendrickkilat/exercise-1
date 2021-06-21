@@ -37,15 +37,11 @@ export default defineComponent({
 <style scoped>
 .post {
   color: rgb(74, 92, 78);
-  background-color: rgb(245, 250, 244);
   font-size: 18px;
   text-align: start;
   margin: 1em;
   padding: 1em;
   cursor: pointer;
-}
-div.post:hover {
-  background-color: rgb(232, 253, 230);
 }
 .input-field input,
 .input-field textarea,

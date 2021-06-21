@@ -1,9 +1,8 @@
 <template>
-  <div class="posts">
-    <!-- <div v-if = "isShown">
+  <!-- <div v-if = "isShown">
       <PostDetails :id = post.id />
-    </div>-->
-    <!-- <Dialog class = "detail-dialog" v-model:visible="isShown" modal=true>
+  </div>-->
+  <!-- <Dialog class = "detail-dialog" v-model:visible="isShown" modal=true>
       <template #header>
         <h3>{{post.title}}</h3>
       </template>
@@ -11,48 +10,56 @@
         <template #footer>
           {{readableDate(post.date)}} <br />
         </template>
-    </Dialog>-->
-    <router-link :to="toPostDetails" class="router">
-      <!-- <div @click = "showModal()"> -->
-      <div class="post-item post-title">
-        <!-- {{ post.title }} -->
-        <span v-if="!editMode" class="post-author grid-item">
-          {{ post.title }}
-          <br />
-          <span class="date">{{ formatDate(post.date) }}</span>
-        </span>
-        <input v-if="editMode" id="title" v-model="title" placeholder="Title" v-on:click.prevent />
-        <div class="action-buttons grid-item">
-          <button class="delete-button"
-          v-on:click.prevent
-          @click.self="deletePost(post.id)">X</button>
-
-          <button v-if="!editMode" class="edit-button"
-          v-on:click.prevent
-          @click.self="toggleEditMode(post.id)">
-          Edit
-          </button>
-
-          <button v-if="editMode" class="cancel-button"
-          v-on:click.prevent
-          @click.self="toggleEditMode(post.id)">
-          Cancel
-        </button>
-
-        <button v-if="editMode" class="edit-button"
-          v-on:click.prevent
-          @click.self="edit(post.id)">
-          Save
-          </button>
-
+  </Dialog>-->
+  <router-link :to="toPostDetails" class="router">
+    <!-- <div @click = "showModal()"> -->
+    <Card>
+      <template #title>
+        <span v-if="!editMode">{{ post.title }}</span>
+        <div class="p-grid p-fluid">
+            <InputText v-if="editMode"
+            v-model="title" placeholder="Title" v-on:click.prevent></InputText>
         </div>
-      </div>
-      <textarea v-if="editMode" id="content"
-      v-model="content" placeholder="What's on your mind?" v-on:click.prevent></textarea>
-      <div v-if = "!editMode" class="post-item post-content">{{ post.content }}</div>
-      <!-- </div> -->
-    </router-link>
-  </div>
+      </template>
+      <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }}</template>
+      <template #content>
+        <div class="p-grid p-fluid">
+          <TextArea v-if="editMode" v-model="content" rows="4" placeholder="Whats on your mind"
+          v-on:click.prevent></TextArea>
+        </div>
+        <span v-if="!editMode">{{ post.content }}</span>
+      </template>
+      <template #footer>
+        <span v-if="editMode">
+          <Button label="Save" icon="pi pi-save" class = "p-button-info"
+          v-on:click.prevent @click="edit(post.id)"></Button>
+          <Button
+            label="Cancel"
+            icon="pi pi-exclamation-circle"
+            class = "p-button-warning"
+            v-on:click.prevent
+            @click="toggleEditMode(post.id)"
+          ></Button>
+        </span>
+        <span v-if="!editMode">
+          <Button
+            label="Edit"
+            icon="pi pi-pencil"
+            v-on:click.prevent
+            @click="toggleEditMode(post.id)"
+          ></Button>
+        </span>
+        <Button
+          label="Delete"
+          icon="pi pi-trash"
+          class = "p-button-danger"
+          v-on:click.prevent
+          @click="deletePost(post.id)"
+        ></Button>
+      </template>
+    </Card>
+    <!-- </div> -->
+  </router-link>
 </template>
 
 <script lang="ts">
@@ -64,10 +71,16 @@ import { IPost } from '@/Interfaces/post';
 import usePostSpace from '@/use/post-space';
 import formatDate from '@/use/use-date-formatter';
 import rn from '@/enums/routenames';
+import Card from 'primevue/card';
+import InputText from 'primevue/inputtext';
+import TextArea from 'primevue/textarea';
 
 export default defineComponent({
   name: 'Post',
   components: {
+    Card,
+    InputText,
+    TextArea,
   },
   setup(props) {
     const toPostDetails = computed(() => ({ name: rn.PDetails, params: { id: props.post.id } }));
@@ -133,7 +146,8 @@ export default defineComponent({
   justify-self: end;
   /* align-self: center; */
 }
-.post-content {
+
+.p-card-content {
   display: -webkit-box;
   padding: 1em;
   overflow: hidden;
@@ -178,13 +192,13 @@ export default defineComponent({
   background-color: #42b983;
 }
 
-.cancel-button:hover{
-  color:white;
+.cancel-button:hover {
+  color: white;
   background-color: rgb(255, 147, 147);
 }
 
-.cancel-button{
-  width:70px;
+.cancel-button {
+  width: 70px;
   color: rgb(255, 147, 147);
 }
 .author-icon {
@@ -202,7 +216,7 @@ export default defineComponent({
   min-width: 700px;
 }
 #title,
-#content{
+#content {
   width: 90%;
   border: none;
   font-size: 18px;
@@ -210,9 +224,10 @@ export default defineComponent({
   color: black;
   outline: none;
   resize: none;
+  background-color: rgba(54, 55, 54, 0.11);
 }
 
-#content{
+#content {
   height: 10em;
 }
 </style>

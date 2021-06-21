@@ -1,6 +1,8 @@
 import ToastService from 'primevue/toastservice';
 import PrimeVue from 'primevue/config';
+
 import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
 
 import 'primevue/resources/themes/saga-green/theme.css'; // theme
 import 'primevue/resources/primevue.min.css'; // core css
@@ -16,5 +18,6 @@ export default {
     app.use(ToastService);
 
     app.component('Dialog', Dialog);
+    app.component('Button', Button);
   },
 };
