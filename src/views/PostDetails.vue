@@ -5,7 +5,7 @@
       <!-- {{post.title}} -->
       <span class = "post-author">{{post.title}} by {{post.author}}</span>
       <br />
-      <span class = "date">{{readableDate(post.date)}}</span>
+      <span class = "date">{{formatDate(post.date)}}</span>
       </div>
     <div class="post-item post-content">
       {{post.content}}
@@ -20,6 +20,7 @@ import {
 import { IPost } from '@/Interfaces/post';
 import rn from '@/enums/routenames';
 import usePostSpace from '@/use/post-space';
+import formatDate from '@/use/use-date-formatter';
 
 export default defineComponent({
   name: 'PostDetails',
@@ -35,16 +36,8 @@ export default defineComponent({
     const { findPost } = usePostSpace();
 
     post.value = findPost(props);
-
-    function readableDate(temp):string {
-      console.log(temp);
-      const dateTime = new Date(temp);
-      const date = `${dateTime.getMonth() + 1}/${dateTime.getDate()}/${dateTime.getFullYear()}`;
-      const altTime = dateTime.toLocaleTimeString();
-      return `${date} | ${altTime}`;
-    }
     return {
-      post, toNewsFeed, readableDate, findPost,
+      post, toNewsFeed, findPost, formatDate,
     };
   },
 });

@@ -19,7 +19,7 @@
         <span v-if="!editMode" class="post-author grid-item">
           {{ post.title }}
           <br />
-          <span class="date">{{ readableDate(post.date) }}</span>
+          <span class="date">{{ formatDate(post.date) }}</span>
         </span>
         <input v-if="editMode" id="title" v-model="title" placeholder="Title" v-on:click.prevent />
         <div class="action-buttons grid-item">
@@ -62,28 +62,23 @@ import {
 // import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
 import usePostSpace from '@/use/post-space';
+import formatDate from '@/use/use-date-formatter';
+import rn from '@/enums/routenames';
 
 export default defineComponent({
   name: 'Post',
   components: {
   },
   setup(props) {
-    const toPostDetails = computed(() => ({ name: 'PostDetails', params: { id: props.post.id } }));
+    const toPostDetails = computed(() => ({ name: rn.PDetails, params: { id: props.post.id } }));
     const {
       deletePost, setInputs, title, content, editPost,
     } = usePostSpace();
     const editMode = ref(false);
 
-    function readableDate(temp): string {
-      console.log(temp);
-      const dateTime = new Date(temp);
-      const date = `${dateTime.getMonth() + 1}/${dateTime.getDate()}/${dateTime.getFullYear()}`;
-      const altTime = dateTime.toLocaleTimeString();
-      return `${date} | ${altTime}`;
-    }
     function toggleEditMode(id) {
       editMode.value = !editMode.value;
-      setInputs(id);
+      setInputs(id); //  cause no mutating props
     }
     function edit(id) {
       editPost(id);
@@ -93,13 +88,13 @@ export default defineComponent({
     return {
       edit,
       deletePost,
-      readableDate,
       toPostDetails,
       editPost,
       title,
       toggleEditMode,
       editMode,
       content,
+      formatDate,
     };
     // for dialog box when needed
     // const isShown = ref(false);

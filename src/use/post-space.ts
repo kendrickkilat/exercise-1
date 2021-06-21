@@ -1,17 +1,13 @@
 import { ref } from 'vue';
-import { useToast } from 'primevue/usetoast';
 import staticPosts from '@/localdata/staticdata';
 import { IPost } from '@/Interfaces/post';
+import useToastSpace from '@/use/toast-space';
 
 export default function usePostSpace() {
-  const toast = useToast();
   const posts = ref<IPost[]>(staticPosts);
   const title = ref('');
   const content = ref('');
-
-  function instantiateToast(data): void {
-    toast.add(data);
-  }
+  const { instantiateToast } = useToastSpace();
 
   function deletePost(value): void {
     console.log('emit2: ', value, posts.value);
@@ -54,6 +50,7 @@ export default function usePostSpace() {
     content.value = '';
     instantiateToast(msg);
   }
+
   function findPost(props): IPost {
     return staticPosts.find((item) => {
       console.log(item.id, Number(props.id));
@@ -87,13 +84,19 @@ export default function usePostSpace() {
         console.log(item, index);
         if (item.id === id) {
           const temp = item;
-          temp.title = title.value;
-          temp.content = content.value;
+          if (temp.title === title.value && temp.content === content.value) {
+            msg = {
+              severity: 'info', summary: 'Updating Form was not processed', detail: 'No change has been detected', life: 3000,
+            };
+          } else {
+            temp.title = title.value;
+            temp.content = content.value;
 
-          posts.value.splice(index, 1, temp);
-          msg = {
-            severity: 'success', summary: 'Post Succesfully Updated!', detail: `${title.value} Successfully Updated`, life: 3000,
-          };
+            posts.value.splice(index, 1, temp);
+            msg = {
+              severity: 'success', summary: 'Post Succesfully Updated!', detail: `${title.value} Successfully Updated`, life: 3000,
+            };
+          }
         }
         console.log(posts.value);
       });

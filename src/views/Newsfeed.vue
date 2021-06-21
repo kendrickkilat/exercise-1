@@ -2,19 +2,19 @@
   <div class="newsfeed">
     <!-- <Toast></Toast> -->
     <!-- INPUT FIELDS -->
-    <PostField :editID="editID"></PostField>
+    <PostField></PostField>
     <!-- LIST -->
     <hr class="divider" />
     <div v-if="posts == null || posts.length == 0" class="message">No Posts...yet</div>
     <div class="posts">
       <div v-for="post in posts" v-bind:key="post.id" class="post">
-        <Post :post="post" @edit-post="setEditID"/>
+        <Post :post="post"/>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import PostField from '@/components/PostFieldComponent.vue'; // @ is an alias to /src
 import Post from '@/components/PostComponent.vue';
 import usePostSpace from '@/use/post-space';
@@ -29,14 +29,8 @@ export default defineComponent({
   },
   setup() {
     const { posts } = usePostSpace();
-    const editID = ref(0);
-
-    function setEditID(id) {
-      console.log('setEditID entered', id);
-      editID.value = id;
-    }
     // provide('inputs', title.value);
-    return { posts, setEditID, editID };
+    return { posts };
   },
 });
 </script>
