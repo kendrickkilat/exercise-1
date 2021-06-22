@@ -37,6 +37,9 @@
       </template>
     </Card>
   </div>
+  <div v-else>
+    <Error404></Error404>
+  </div>
 </template>
 <script lang="ts">
 import {
@@ -51,6 +54,7 @@ import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import router from '@/router';
+import Error404 from '@/views/Error404.vue';
 
 export default defineComponent({
   name: 'PostDetails',
@@ -58,6 +62,7 @@ export default defineComponent({
     Card,
     InputText,
     TextArea,
+    Error404,
   },
   props: {
     id: {
@@ -85,7 +90,7 @@ export default defineComponent({
 
     function del(id) {
       deletePost(id);
-      router.back();
+      router.push({ name: rn.Newsfeed });
     }
 
     post.value = findPost(props);

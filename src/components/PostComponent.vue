@@ -11,17 +11,22 @@
           {{readableDate(post.date)}} <br />
         </template>
   </Dialog>-->
-  <router-link :to="toPostDetails" class="router">
+  <!-- <router-link :to="toPostDetails" class="router"> -->
     <!-- <div @click = "showModal()"> -->
     <Card>
       <template #title>
-        <span v-if="!editMode">{{ post.title }}</span>
-        <div class="p-grid p-fluid">
+        <div class = "p-grid p-fluid">
+            <span v-if="!editMode" class = "p-col">{{ post.title }}</span>
             <InputText v-if="editMode"
-            v-model="title" placeholder="Title" v-on:click.prevent></InputText>
+            v-model="title" placeholder="Title" v-on:click.prevent class = "p-col"></InputText>
+            <Button id="view-details" icon="pi pi-eye"
+            class = "p-button-rounded p-button-text p-mr-2 p-mb-2 p-col-fixed"
+            v-on:click.prevent
+            label = "View"
+            @click="navToPDetails"></Button>
         </div>
       </template>
-      <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }}</template>
+      <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }} </template>
       <template #content>
         <div class="p-grid p-fluid">
           <TextArea v-if="editMode" v-model="content" rows="4" placeholder="Whats on your mind"
@@ -59,7 +64,7 @@
       </template>
     </Card>
     <!-- </div> -->
-  </router-link>
+  <!-- </router-link> -->
 </template>
 
 <script lang="ts">
@@ -74,6 +79,7 @@ import rn from '@/enums/routenames';
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
+import router from '@/router';
 
 export default defineComponent({
   name: 'Post',
@@ -97,6 +103,9 @@ export default defineComponent({
       editPost(id);
       toggleEditMode(id);
     }
+    function navToPDetails() {
+      router.push({ name: rn.PDetails, params: { id: props.post.id } });
+    }
 
     return {
       edit,
@@ -108,6 +117,7 @@ export default defineComponent({
       editMode,
       content,
       formatDate,
+      navToPDetails,
     };
     // for dialog box when needed
     // const isShown = ref(false);
@@ -229,5 +239,9 @@ export default defineComponent({
 
 #content {
   height: 10em;
+}
+
+#view-details {
+  width:100px;
 }
 </style>

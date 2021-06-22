@@ -17,7 +17,7 @@ export default function usePostSpace() {
         console.log('id', item.id, 'item index', index, 'value: ', value);
         posts.value.splice(index, 1);
         const msg = {
-          severity: 'success', summary: 'Post Succesfully Deleted!', detail: `${title.value} Successfully Deleted`, life: 3000,
+          severity: 'error', summary: 'Post Succesfully Deleted!', detail: `${item.title} Successfully Deleted`, life: 3000,
         };
         instantiateToast(msg);
       }

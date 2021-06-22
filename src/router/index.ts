@@ -25,7 +25,8 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/PostDetails.vue'),
   },
   {
-    path: '/:catchAll(.*)*',
+    path: '/:catchAll(.*)',
+    name: RouteNames.Error,
     component: () => import('../views/Error404.vue'),
   },
 ];

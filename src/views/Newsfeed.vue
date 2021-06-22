@@ -41,7 +41,7 @@ export default defineComponent({
   text-align: start;
   margin: 1em;
   padding: 1em;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .input-field input,
 .input-field textarea,

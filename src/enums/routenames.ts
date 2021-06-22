@@ -3,6 +3,7 @@ enum RouteNames {
     Newsfeed = 'Newsfeed',
     PDetails = 'PostDetails',
     PVC = 'PrimeVueComponents',
+    Error = 'Error404',
 }
 
 export default RouteNames;

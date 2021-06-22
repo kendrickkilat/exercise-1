@@ -55,7 +55,7 @@ body{
 //   color: White
 // }
 .p-button{
-  margin:1em 1em;
+  margin:0.5em 0.1em;
 }
 #nav + div {
   margin-top:80px;
@@ -98,20 +98,32 @@ hr.divider{
   padding:1em;
 }
 
-.posts .p-card-content {
+.posts .p-card-content span {
   display: -webkit-box;
   padding: 1em;
   overflow: hidden;
-  height: 125px;
+  height: 120px;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 
-.p-card-footer Button{
-  width: 10%;
+.p-card .p-card-footer button:not(#view-details) {
+  width: 125px;
 }
-
+.p-card .p-card-footer {
+  text-align:end;
+}
+.p-card .p-card-title .p-col,
+.p-card .p-card-title .p-col-fixed {
+  align-self: flex-end;
+}
+.p-card {
+  padding:0.5em;
+}
 .p-inputtext{
   margin:8px!important;
+}
+textarea {
+  resize:none;
 }
 </style>
