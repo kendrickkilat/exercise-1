@@ -32,9 +32,9 @@ li {
 a {
   color: #42b983;
 }
-.image{
-  background-color:white;
-  padding:20px;
-  border-radius:100px
-}
+// .image{
+//   background-color:white;
+//   padding:20px;
+//   border-radius:100px
+// }
 </style>

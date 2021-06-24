@@ -4,8 +4,8 @@
     <!-- INPUT FIELDS -->
     <PostField></PostField>
     <!-- LIST -->
-    <hr class="divider" />
-    <div v-if="posts == null || posts.length == 0" class="message">No Posts...yet</div>
+    <!-- <hr class="divider" /> -->
+    <div v-if="posts == null || posts.length == 0" class="message">No posts...yet</div>
     <div class="posts">
       <div v-for="post in posts" v-bind:key="post.id" class="post">
         <Post :post="post"/>
@@ -34,7 +34,10 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
+<style scoped lang="scss">
+.message {
+  color: var(--text-color);
+}
 .post {
   color: rgb(74, 92, 78);
   font-size: 18px;
@@ -65,7 +68,7 @@ button {
 }
 input,
 textarea {
-  background-color: rgb(245, 250, 244);
+  background-color: var(--primary-color)
 }
 ::placeholder {
   color: grey;

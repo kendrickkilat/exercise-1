@@ -1,7 +1,8 @@
 <template>
   <div v-if="post" class="post">
     <router-link class="router" :to="toNewsFeed">
-      <Button label="Back to Newsfeed" icon="pi pi-arrow-left"></Button>
+      <Button label=" Back to Newsfeed" icon="pi pi-arrow-left"
+      class = "p-button-text p-mr-2 p-mb-2"></Button>
     </router-link>
     <Card>
       <template #title><span v-if="!editMode">{{ post.title }}</span>
@@ -19,19 +20,21 @@
       </template>
       <template #footer>
         <span v-if="editMode">
-          <Button label="Save" icon="pi pi-save" class = "p-button-info"
+          <Button label="Save" icon="pi pi-save" class = "p-button-info p-button-text p-mr-2 p-mb-2"
           v-on:click.prevent @click="edit(post?.id)"></Button>
           <Button label="Cancel" icon="pi pi-exclamation-circle"
-          class = "p-button-warning"
+          class = "p-button-warning p-button-text p-mr-2 p-mb-2"
           v-on:click.prevent
           @click="toggleEditMode(post?.id)"></Button>
         </span>
         <span v-if="!editMode">
           <Button label="Edit" icon="pi pi-pencil"
+          class = "p-button-text p-mr-2 p-mb-2"
           v-on:click.prevent
           @click="toggleEditMode(post?.id)"></Button>
         </span>
-        <Button label="Delete" icon="pi pi-trash" class = "p-button-danger"
+        <Button label="Delete" icon="pi pi-trash"
+        class = "p-button-danger p-button-text p-mr-2 p-mb-2"
         v-on:click.prevent
         @click="del(post?.id)"></Button>
       </template>

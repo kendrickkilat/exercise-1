@@ -12,58 +12,78 @@
         </template>
   </Dialog>-->
   <!-- <router-link :to="toPostDetails" class="router"> -->
-    <!-- <div @click = "showModal()"> -->
-    <Card>
-      <template #title>
-        <div class = "p-grid p-fluid">
-            <span v-if="!editMode" class = "p-col">{{ post.title }}</span>
-            <InputText v-if="editMode"
-            v-model="title" placeholder="Title" v-on:click.prevent class = "p-col"></InputText>
-            <Button id="view-details" icon="pi pi-eye"
-            class = "p-button-rounded p-button-text p-mr-2 p-mb-2 p-col-fixed"
-            v-on:click.prevent
-            label = "View"
-            @click="navToPDetails"></Button>
-        </div>
-      </template>
-      <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }} </template>
-      <template #content>
-        <div class="p-grid p-fluid">
-          <TextArea v-if="editMode" v-model="content" rows="4" placeholder="Whats on your mind"
-          v-on:click.prevent></TextArea>
-        </div>
-        <span v-if="!editMode">{{ post.content }}</span>
-      </template>
-      <template #footer>
-        <span v-if="editMode">
-          <Button label="Save" icon="pi pi-save" class = "p-button-info"
-          v-on:click.prevent @click="edit(post.id)"></Button>
-          <Button
-            label="Cancel"
-            icon="pi pi-exclamation-circle"
-            class = "p-button-warning"
-            v-on:click.prevent
-            @click="toggleEditMode(post.id)"
-          ></Button>
-        </span>
-        <span v-if="!editMode">
-          <Button
-            label="Edit"
-            icon="pi pi-pencil"
-            v-on:click.prevent
-            @click="toggleEditMode(post.id)"
-          ></Button>
-        </span>
+  <!-- <div @click = "showModal()"> -->
+  <Card>
+    <template #title>
+      <div class="p-grid p-fluid">
+        <span v-if="!editMode" class="p-col">{{ post.title }}</span>
+        <InputText
+          v-if="editMode"
+          v-model="title"
+          placeholder="Title"
+          v-on:click.prevent
+          class="p-col"
+        ></InputText>
         <Button
+          id ="delete-btn"
           label="Delete"
           icon="pi pi-trash"
-          class = "p-button-danger"
+          class="p-button-danger p-button-text p-mr-2 p-mb-2 p-col-fixed"
           v-on:click.prevent
           @click="deletePost(post.id)"
         ></Button>
-      </template>
-    </Card>
-    <!-- </div> -->
+      </div>
+    </template>
+    <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }}</template>
+    <template #content>
+      <div class="p-grid p-fluid">
+        <TextArea
+          v-if="editMode"
+          v-model="content"
+          rows="4"
+          placeholder="Whats on your mind"
+          v-on:click.prevent
+        ></TextArea>
+      </div>
+      <span v-if="!editMode">{{ post.content }}</span>
+    </template>
+    <template #footer>
+      <span v-if="editMode">
+        <Button
+          label="Save"
+          icon="pi pi-save"
+          class="p-button-info p-button-text p-mr-2 p-mb-2"
+          v-on:click.prevent
+          @click="edit(post.id)"
+        ></Button>
+        <Button
+          label="Cancel"
+          icon="pi pi-exclamation-circle"
+          class="p-button-warning p-button-text p-mr-2 p-mb-2"
+          v-on:click.prevent
+          @click="toggleEditMode(post.id)"
+        ></Button>
+      </span>
+      <span v-if="!editMode">
+        <Button
+          label="Edit"
+          icon="pi pi-pencil"
+          class = "p-button-text p-mr-2 p-mb-2"
+          v-on:click.prevent
+          @click="toggleEditMode(post.id)"
+        ></Button>
+      </span>
+      <Button
+          id="view-details"
+          icon="pi pi-eye"
+          class="p-button-info p-button-text p-mr-2 p-mb-2"
+          v-on:click.prevent
+          label="View"
+          @click="navToPDetails"
+        ></Button>
+    </template>
+  </Card>
+  <!-- </div> -->
   <!-- </router-link> -->
 </template>
 
@@ -241,7 +261,7 @@ export default defineComponent({
   height: 10em;
 }
 
-#view-details {
-  width:100px;
+#delete-btn {
+  width: 100px;
 }
 </style>

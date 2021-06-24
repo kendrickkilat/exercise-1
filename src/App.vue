@@ -18,7 +18,7 @@ export default {
 $textColor: rgb(74, 92, 78);
 
 body{
-  background-color:rgb(200, 238, 206);
+  background-color:var(--surface-100);
   margin:0;
 }
 #app {
@@ -125,5 +125,8 @@ hr.divider{
 }
 textarea {
   resize:none;
+}
+.p-menubar {
+  margin-bottom: 1em;
 }
 </style>

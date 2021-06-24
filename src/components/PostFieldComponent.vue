@@ -43,7 +43,7 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
+<style scoped lang="scss">
 .input-field input,
 .input-field textarea{
   border: none;
@@ -62,7 +62,7 @@ export default defineComponent({
 }
 input,
 textarea {
-  background-color: rgb(245, 250, 244);
+  background-color: var(--surface-0)
 }
 ::placeholder {
   color: grey;
