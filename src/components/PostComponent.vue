@@ -25,7 +25,7 @@
           class="p-col"
         ></InputText>
         <Button
-          id ="delete-btn"
+          id ="fixed-btn"
           label="Delete"
           icon="pi pi-trash"
           class="p-button-danger p-button-text p-mr-2 p-mb-2 p-col-fixed"
@@ -74,7 +74,7 @@
         ></Button>
       </span>
       <Button
-          id="view-details"
+          id="fixed-btn"
           icon="pi pi-eye"
           class="p-button-info p-button-text p-mr-2 p-mb-2"
           v-on:click.prevent
@@ -261,7 +261,7 @@ export default defineComponent({
   height: 10em;
 }
 
-#delete-btn {
+#fixed-btn {
   width: 100px;
 }
 </style>

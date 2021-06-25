@@ -122,10 +122,6 @@ export default defineComponent({
   margin: 1em;
   padding: 1em;
 }
-.p-card-body .p-card-title {
-  font-size: 24px;
-  color: #42b983 !important;
-}
 .date {
   color: rgb(208, 214, 213);
   font-size: 14px;

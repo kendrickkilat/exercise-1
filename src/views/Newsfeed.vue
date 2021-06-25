@@ -5,7 +5,7 @@
     <PostField></PostField>
     <!-- LIST -->
     <!-- <hr class="divider" /> -->
-    <div v-if="posts == null || posts.length == 0" class="message">No posts...yet</div>
+    <!-- <div v-if="posts == null || posts.length == 0" class="message">No posts...yet</div> -->
     <div class="posts">
       <div v-for="post in posts" v-bind:key="post.id" class="post">
         <Post :post="post"/>

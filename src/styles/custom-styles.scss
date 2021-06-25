@@ -1,0 +1,102 @@
+$textColor: rgb(74, 92, 78);
+body{
+    background-color:var(--surface-100);
+    margin:0;
+  }
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  .router{
+    text-decoration:none;
+    color:$textColor
+  }
+  .router:focus,
+  .router:active,
+  .router:visited{
+    color:$textColor
+  }
+  .p-button{
+    margin:0.5em 0.1em;
+  }
+  #nav + div {
+    margin-top:80px;
+  }
+  hr.divider{
+    height:2px;
+    margin:0px 5%;
+    background-color:rgba(0, 0, 0, 0.068);
+    border:0;
+  }
+  .message {
+    font-size:18px;
+    font-weight: bold;
+    margin:10px;
+  }
+  .modal-background {
+    background-color: rgba(0, 0, 0, 0.185);
+    height:100%;
+    width:100%;
+    top: 50%;
+    left: 50%;
+    /* margin:1em; */
+    padding:1em;
+    margin-top: -30%; /* Negative half of height. */
+    margin-left: -50%; /* Negative half of width. */
+    position:fixed;
+  }
+  .p-dialog{
+    margin:5em;
+    min-width:350px;
+  }
+  .p-dialog
+  .p-dialog-content{
+    min-height:200px;
+    padding:1.5em;
+  }
+  .p-dialog
+  .p-dialog-header, .p-dialog .p-dialog-footer{
+    background:rgb(200, 238, 206);
+    padding:1em;
+  }
+  
+  .posts .p-card-content span {
+    display: -webkit-box;
+    padding: 1em;
+    overflow: hidden;
+    max-height: 120px;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
+  
+  .p-card .p-card-footer button:not(#view-details) {
+    width: 125px;
+  }
+  .p-card .p-card-footer {
+    text-align:end;
+  }
+  .p-card .p-card-title .p-col,
+  .p-card .p-card-title .p-col-fixed {
+    align-self: flex-end;
+  }
+  .p-card {
+    padding:0.5em;
+  }
+  .p-inputtext{
+    margin:8px!important;
+  }
+  textarea {
+    resize:none;
+  }
+  .p-menubar {
+    margin-bottom: 1em;
+  }
+  .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus,
+  .p-menubar .p-menuitem-link:focus span {
+      box-shadow:none!important;
+      color: var(--primary-color)!important;
+  }
