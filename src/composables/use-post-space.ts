@@ -72,23 +72,19 @@ export default function usePostSpace() {
   function editPost(id: number): string {
     console.log('editPost entered', id, title.value);
     let result = 'error';
-    if (title.value !== '' && content.value !== '') {
-      posts.value.forEach((item, index) => {
-        console.log(item, index);
-        if (item.id === id) {
-          const temp = item;
-          if (temp.title === title.value && temp.content === content.value) {
-            result = 'no-change';
-          } else {
-            temp.title = title.value;
-            temp.content = content.value;
-
-            posts.value.splice(index, 1, temp);
-            result = 'success';
-          }
+    const temp = findPost(id);
+    const index = findPostIndex(id);
+    if (title.value !== '' && content.value === '') {
+      if (temp.title === title.value && temp.content === content.value) {
+        result = 'no-change';
+      } else {
+        temp.title = title.value;
+        temp.content = content.value;
+        if (typeof (index) === 'number') {
+          posts.value.splice(index, 1, temp);
+          result = 'success';
         }
-        console.log(posts.value);
-      });
+      }
     }
     return result;
   }
