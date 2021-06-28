@@ -63,15 +63,12 @@
         />
     </template>
   </Card>
-  <!-- </div> -->
-  <!-- </router-link> -->
 </template>
 
 <script lang="ts">
 import {
   computed, defineComponent, PropType, ref,
 } from 'vue';
-// import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
 import usePostSpace from '@/composables/use-post-space';
 import formatDate from '@/composables/use-date-formatter';
@@ -99,7 +96,7 @@ export default defineComponent({
 
     function toggleEditMode(id:number) {
       editMode.value = !editMode.value;
-      populateEditFields(id); //  cause no mutating props
+      populateEditFields(id);
     }
 
     function triggerEditPost(id:number) {
@@ -206,7 +203,6 @@ export default defineComponent({
   align-content: center;
   width: 50px;
   color: #42b983;
-  /* background-color: rgb(238, 51, 51); */
   padding: 5px;
   background-color: unset;
 }
@@ -219,7 +215,6 @@ export default defineComponent({
   align-content: center;
   width: 50px;
   color: #42b983;
-  /* background-color: rgb(238, 51, 51); */
   padding: 5px;
   background-color: unset;
 }

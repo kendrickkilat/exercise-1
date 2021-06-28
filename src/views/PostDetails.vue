@@ -103,8 +103,6 @@ export default defineComponent({
     } = usePostSpace();
     const post = ref<IPost>(findPost(props.id));
 
-    // post.value = findPost(props.id);
-
     function toggleEditMode(id:number) {
       editMode.value = !editMode.value;
       const result = populateEditFields(id);

@@ -16,7 +16,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-// import PostService from '@/services/PostService';
 import usePostSpace from '@/composables/use-post-space';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
