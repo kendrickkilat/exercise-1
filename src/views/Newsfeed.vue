@@ -1,11 +1,6 @@
 <template>
   <div class="newsfeed">
-    <!-- <Toast></Toast> -->
-    <!-- INPUT FIELDS -->
     <PostField></PostField>
-    <!-- LIST -->
-    <!-- <hr class="divider" /> -->
-    <!-- <div v-if="posts == null || posts.length == 0" class="message">No posts...yet</div> -->
     <div class="posts">
       <div v-for="post in posts" v-bind:key="post.id" class="post">
         <Post :post="post"/>
@@ -15,21 +10,18 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PostField from '@/components/PostFieldComponent.vue'; // @ is an alias to /src
+import PostField from '@/components/PostFieldComponent.vue';
 import Post from '@/components/PostComponent.vue';
-import usePostSpace from '@/use/post-space';
+import usePostSpace from '@/composables/use-post-space';
 
 export default defineComponent({
-  // inject: ['localPosts'],
   name: 'Home',
   components: {
     PostField,
     Post,
-    // Toast,
   },
   setup() {
     const { posts } = usePostSpace();
-    // provide('inputs', title.value);
     return { posts };
   },
 });
@@ -44,7 +36,6 @@ export default defineComponent({
   text-align: start;
   margin: 1em;
   padding: 1em;
-  /* cursor: pointer; */
 }
 .input-field input,
 .input-field textarea,

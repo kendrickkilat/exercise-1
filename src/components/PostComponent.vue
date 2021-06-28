@@ -1,18 +1,4 @@
 <template>
-  <!-- <div v-if = "isShown">
-      <PostDetails :id = post.id />
-  </div>-->
-  <!-- <Dialog class = "detail-dialog" v-model:visible="isShown" modal=true>
-      <template #header>
-        <h3>{{post.title}}</h3>
-      </template>
-        {{post.content}}
-        <template #footer>
-          {{readableDate(post.date)}} <br />
-        </template>
-  </Dialog>-->
-  <!-- <router-link :to="toPostDetails" class="router"> -->
-  <!-- <div @click = "showModal()"> -->
   <Card>
     <template #title>
       <div class="p-grid p-fluid">
@@ -21,7 +7,6 @@
           v-if="editMode"
           v-model="title"
           placeholder="Title"
-          v-on:click.prevent
           class="p-col"
         ></InputText>
         <Button
@@ -29,9 +14,8 @@
           label="Delete"
           icon="pi pi-trash"
           class="p-button-danger p-button-text p-mr-2 p-mb-2 p-col-fixed"
-          v-on:click.prevent
-          @click="deletePost(post.id)"
-        ></Button>
+          @click="triggerDeletePost(post.id)"
+        />
       </div>
     </template>
     <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }}</template>
@@ -53,34 +37,30 @@
           label="Save"
           icon="pi pi-save"
           class="p-button-info p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent
-          @click="edit(post.id)"
-        ></Button>
+          @click="triggerEditPost(post.id)"
+        />
         <Button
           label="Cancel"
           icon="pi pi-exclamation-circle"
           class="p-button-warning p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent
           @click="toggleEditMode(post.id)"
-        ></Button>
+        />
       </span>
       <span v-if="!editMode">
         <Button
           label="Edit"
           icon="pi pi-pencil"
           class = "p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent
           @click="toggleEditMode(post.id)"
-        ></Button>
+        />
       </span>
       <Button
           id="fixed-btn"
           icon="pi pi-eye"
           class="p-button-info p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent
           label="View"
-          @click="navToPDetails"
-        ></Button>
+          @click="goToPostDetails"
+        />
     </template>
   </Card>
   <!-- </div> -->
@@ -93,13 +73,14 @@ import {
 } from 'vue';
 // import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
-import usePostSpace from '@/use/post-space';
-import formatDate from '@/use/use-date-formatter';
+import usePostSpace from '@/composables/use-post-space';
+import formatDate from '@/composables/use-date-formatter';
 import rn from '@/enums/routenames';
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import router from '@/router';
+import useToastSpace from '@/composables/use-toast';
 
 export default defineComponent({
   name: 'Post',
@@ -109,27 +90,66 @@ export default defineComponent({
     TextArea,
   },
   setup(props) {
+    const { instantiateToast } = useToastSpace();
     const toPostDetails = computed(() => ({ name: rn.PDetails, params: { id: props.post.id } }));
     const {
-      deletePost, setInputs, title, content, editPost,
+      deletePost, populateEditFields, title, content, editPost,
     } = usePostSpace();
     const editMode = ref(false);
 
-    function toggleEditMode(id) {
+    function toggleEditMode(id:number) {
       editMode.value = !editMode.value;
-      setInputs(id); //  cause no mutating props
+      populateEditFields(id); //  cause no mutating props
     }
-    function edit(id) {
-      editPost(id);
+
+    function triggerEditPost(id:number) {
+      const result = editPost(id);
+      let msg = {};
+      switch (result) {
+        case 'no-change':
+          msg = {
+            severity: 'info', summary: 'Updating Form was not processed', detail: 'No change has been detected', life: 3000,
+          };
+          break;
+        case 'error':
+          msg = {
+            severity: 'error', summary: 'Error Updating Post', detail: 'Title and/or Content is empty', life: 3000,
+          }; break;
+        case 'success':
+          msg = {
+            severity: 'success', summary: 'Success!', detail: 'Post Successfully Updated', life: 3000,
+          };
+          break;
+        default: break;
+      }
+      instantiateToast(msg);
       toggleEditMode(id);
     }
-    function navToPDetails() {
+
+    function goToPostDetails() {
       router.push({ name: rn.PDetails, params: { id: props.post.id } });
     }
 
+    function triggerDeletePost(id) {
+      let msg = {};
+      const result = deletePost(id);
+      if (result) {
+        msg = {
+          severity: 'success', summary: 'Success!', detail: 'Post has successfully deleted', life: 3000,
+        };
+      } else {
+        msg = {
+          severity: 'error', summary: 'Error in Deleting Post', detail: 'Post not found', life: 3000,
+        };
+      }
+
+      instantiateToast(msg);
+      router.push({ name: rn.Newsfeed });
+    }
+
     return {
-      edit,
-      deletePost,
+      triggerEditPost,
+      triggerDeletePost,
       toPostDetails,
       editPost,
       title,
@@ -137,17 +157,8 @@ export default defineComponent({
       editMode,
       content,
       formatDate,
-      navToPDetails,
+      goToPostDetails,
     };
-    // for dialog box when needed
-    // const isShown = ref(false);
-    // function showModal():void {
-    //   isShown.value = true;
-    // }
-
-    // return {
-    //   isShown, deleteItem, readableDate, showModal, toPostDetails,
-    // };
   },
   props: {
     post: {
@@ -158,9 +169,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-/* .post-item{
-   background-color: rgb(232, 253, 230);
-} */
 .author-icon {
   margin-right: 10px;
 }
@@ -174,7 +182,6 @@ export default defineComponent({
 }
 .grid-item {
   justify-self: end;
-  /* align-self: center; */
 }
 
 .p-card-content {

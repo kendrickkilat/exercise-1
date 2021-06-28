@@ -3,7 +3,7 @@
   <h1>Oops</h1>
   <h3>Page not Found</h3>
 
-  <router-link :to="toNewsFeed">Head back to Newsfeed</router-link>
+  <router-link :to="goToNewsFeed">Head back to Newsfeed</router-link>
 </template>
 
 <script lang="ts">
@@ -13,10 +13,10 @@ import rn from '@/enums/routenames';
 export default defineComponent({
   name: 'Error404',
   setup() {
-    const toNewsFeed = computed(() => ({ name: rn.Newsfeed }));
+    const goToNewsFeed = computed(() => ({ name: rn.Newsfeed }));
 
     return {
-      toNewsFeed,
+      goToNewsFeed,
     };
   },
 });

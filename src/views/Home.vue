@@ -1,17 +1,23 @@
 <template>
   <div class="home">
-    <NameComponent msg="Kendrick Jordan B. Kilat" />
+    <NameComponent :msg="name" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import NameComponent from '@/components/NameComponent.vue'; // @ is an alias to /src
+import { defineComponent, ref } from 'vue';
+import NameComponent from '@/components/NameComponent.vue';
 
 export default defineComponent({
   name: 'Home',
   components: {
     NameComponent,
+  },
+  setup() {
+    const name = ref('Kendrick Jordan B. Kilat');
+    return {
+      name,
+    };
   },
 });
 </script>

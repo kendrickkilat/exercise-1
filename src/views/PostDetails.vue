@@ -1,43 +1,64 @@
 <template>
   <div v-if="post" class="post">
-    <router-link class="router" :to="toNewsFeed">
-      <Button label=" Back to Newsfeed" icon="pi pi-arrow-left"
-      class = "p-button-text p-mr-2 p-mb-2"></Button>
+    <router-link class="router" :to="goToNewsFeed">
+      <Button
+      label=" Back to Newsfeed"
+      icon="pi pi-arrow-left"
+      class = "p-button-text p-mr-2 p-mb-2"/>
     </router-link>
+
     <Card>
-      <template #title><span v-if="!editMode">{{ post.title }}</span>
+      <template #title>
+        <span v-if="!editMode">{{ post.title }}</span>
         <div class="p-grid p-fluid">
             <InputText v-if="editMode"
-            v-model="title" placeholder="Title" v-on:click.prevent></InputText>
+            v-model="title"
+            placeholder="Title"
+            ></InputText>
         </div>
       </template>
-      <template #subtitle>by {{ post.author }} - {{ formatDate(post.date) }}</template>
-      <template #content><span v-if="!editMode">{{ post.content }}</span>
+
+      <template #subtitle>
+        by {{ post.author }} - {{ formatDate(post.date) }}
+      </template>
+      <template #content>
+        <span v-if="!editMode">{{ post.content }}</span>
         <div class="p-grid p-fluid">
-          <TextArea v-if="editMode" v-model="content" rows="4" placeholder="Whats on your mind"
-          v-on:click.prevent></TextArea>
+          <TextArea v-if="editMode"
+            v-model="content"
+            rows="4"
+            placeholder="Whats on your mind"
+           >
+          </TextArea>
         </div>
       </template>
+
       <template #footer>
         <span v-if="editMode">
-          <Button label="Save" icon="pi pi-save" class = "p-button-info p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent @click="edit(post?.id)"></Button>
-          <Button label="Cancel" icon="pi pi-exclamation-circle"
+          <Button label="Save"
+          icon="pi pi-save"
+          class = "p-button-info p-button-text p-mr-2 p-mb-2"
+          @click="triggerEditPost(post.id)" />
+
+          <Button label="Cancel"
+          icon="pi pi-exclamation-circle"
           class = "p-button-warning p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent
-          @click="toggleEditMode(post?.id)"></Button>
+          @click="toggleEditMode(post.id)"/>
         </span>
+
         <span v-if="!editMode">
-          <Button label="Edit" icon="pi pi-pencil"
+          <Button label="Edit"
+          icon="pi pi-pencil"
           class = "p-button-text p-mr-2 p-mb-2"
-          v-on:click.prevent
-          @click="toggleEditMode(post?.id)"></Button>
+          @click="toggleEditMode(post.id)" />
         </span>
-        <Button label="Delete" icon="pi pi-trash"
+
+        <Button label="Delete"
+        icon="pi pi-trash"
         class = "p-button-danger p-button-text p-mr-2 p-mb-2"
-        v-on:click.prevent
-        @click="del(post?.id)"></Button>
+        @click="triggerDeletePost(post.id)" />
       </template>
+
     </Card>
   </div>
   <div v-else>
@@ -46,18 +67,18 @@
 </template>
 <script lang="ts">
 import {
-  computed, defineComponent, PropType, ref,
+  computed, defineComponent, ref,
 } from 'vue';
-// import PostService from '@/services/PostService';
 import { IPost } from '@/Interfaces/post';
 import rn from '@/enums/routenames';
-import usePostSpace from '@/use/post-space';
-import formatDate from '@/use/use-date-formatter';
+import usePostSpace from '@/composables/use-post-space';
+import formatDate from '@/composables/use-date-formatter';
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import router from '@/router';
 import Error404 from '@/views/Error404.vue';
+import useToastSpace from '@/composables/use-toast';
 
 export default defineComponent({
   name: 'PostDetails',
@@ -69,48 +90,81 @@ export default defineComponent({
   },
   props: {
     id: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true,
     },
   },
   setup(props) {
+    const { instantiateToast } = useToastSpace();
     const editMode = ref(false);
-    const post = ref<IPost>();
-    const toNewsFeed = computed(() => ({ name: rn.Newsfeed }));
+    const goToNewsFeed = computed(() => ({ name: rn.Newsfeed }));
     const {
-      findPost, editPost, setInputs, deletePost, title, content,
+      findPost, editPost, populateEditFields, deletePost, title, content,
     } = usePostSpace();
+    const post = ref<IPost>(findPost(props.id));
 
-    function toggleEditMode(id) {
+    // post.value = findPost(props.id);
+
+    function toggleEditMode(id:number) {
       editMode.value = !editMode.value;
-      setInputs(id);
+      const result = populateEditFields(id);
+      console.log('populateFields successful', result);
     }
 
-    function edit(id) {
-      editPost(id);
+    function triggerEditPost(id:number) {
+      const result = editPost(id);
+      let msg = {};
+      switch (result) {
+        case 'no-change':
+          msg = {
+            severity: 'info', summary: 'Updating Form was not processed', detail: 'No change has been detected', life: 3000,
+          };
+          break;
+        case 'error':
+          msg = {
+            severity: 'error', summary: 'Error Updating Post', detail: 'Title and/or Content is empty', life: 3000,
+          }; break;
+        case 'success':
+          msg = {
+            severity: 'success', summary: 'Success!', detail: 'Post Successfully Updated', life: 3000,
+          };
+          break;
+        default: break;
+      }
+      instantiateToast(msg);
       toggleEditMode(id);
     }
 
-    function del(id) {
-      deletePost(id);
+    function triggerDeletePost(id:number) {
+      let msg = {};
+      const result = deletePost(id);
+      if (result) {
+        msg = {
+          severity: 'success', summary: 'Success!', detail: 'Post has successfully deleted', life: 3000,
+        };
+      } else {
+        msg = {
+          severity: 'error', summary: 'Error in Deleting Post', detail: 'Post not found', life: 3000,
+        };
+      }
+
+      instantiateToast(msg);
       router.push({ name: rn.Newsfeed });
     }
 
-    post.value = findPost(props);
     return {
       post,
-      toNewsFeed,
+      goToNewsFeed,
       findPost,
       formatDate,
       editMode,
       toggleEditMode,
       editPost,
-      setInputs,
       deletePost,
-      edit,
+      triggerEditPost,
       title,
       content,
-      del,
+      triggerDeletePost,
     };
   },
 });

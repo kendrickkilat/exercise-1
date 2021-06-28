@@ -9,11 +9,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Home.vue'),
   },
   {
-    path: '/prime-vue-test',
-    name: RouteNames.PVC,
-    component: () => import('../views/PrimeVueComponents.vue'),
-  },
-  {
     path: '/newsfeed',
     name: RouteNames.Newsfeed,
     component: () => import('../views/Newsfeed.vue'),
