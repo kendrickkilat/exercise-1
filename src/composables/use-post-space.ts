@@ -1,11 +1,9 @@
 import { ref } from 'vue';
-// import staticPosts from '@/localdata/staticdata';
 import { IPost } from '@/Interfaces/post';
 import useStore from '@/composables/use-store';
 
 export default function usePostSpace() {
   const { posts } = useStore();
-  // const posts = ref<IPost[]>(staticData);
   const title = ref('');
   const content = ref('');
 
