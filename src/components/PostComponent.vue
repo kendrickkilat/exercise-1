@@ -70,7 +70,7 @@ import {
   defineComponent, PropType, ref,
 } from 'vue';
 import { IPost } from '@/Interfaces/post';
-import usePostSpace from '@/composables/use-post-space';
+import usePostSpace from '@/composables/use-post';
 import formatDate from '@/composables/use-date-formatter';
 import rn from '@/enums/routenames';
 import Card from 'primevue/card';

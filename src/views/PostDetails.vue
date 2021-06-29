@@ -71,7 +71,7 @@ import {
 } from 'vue';
 // import { IPost } from '@/Interfaces/post';
 import rn from '@/enums/routenames';
-import usePost from '@/composables/use-post-space';
+import usePost from '@/composables/use-post';
 import formatDate from '@/composables/use-date-formatter';
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';

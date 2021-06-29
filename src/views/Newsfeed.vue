@@ -12,7 +12,7 @@
 import { defineComponent } from 'vue';
 import PostField from '@/components/PostFieldComponent.vue';
 import Post from '@/components/PostComponent.vue';
-import usePostSpace from '@/composables/use-post-space';
+import usePostSpace from '@/composables/use-post';
 
 export default defineComponent({
   name: 'Home',
