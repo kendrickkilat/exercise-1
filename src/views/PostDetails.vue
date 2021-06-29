@@ -79,6 +79,7 @@ import TextArea from 'primevue/textarea';
 import router from '@/router';
 import Error404 from '@/views/Error404.vue';
 import useToastSpace from '@/composables/use-toast';
+import { IToast } from '@/Interfaces/toast';
 
 export default defineComponent({
   name: 'PostDetails',
@@ -111,7 +112,7 @@ export default defineComponent({
 
     function triggerEditPost(id:number) {
       const result = editPost(id);
-      let msg = {};
+      let msg = {} as IToast;
       switch (result) {
         case 'no-change':
           msg = {
@@ -134,7 +135,7 @@ export default defineComponent({
     }
 
     function triggerDeletePost(id:number) {
-      let msg = {};
+      let msg = {} as IToast;
       const result = deletePost(id);
       if (result) {
         msg = {

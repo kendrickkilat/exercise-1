@@ -21,6 +21,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import useToastSpace from '@/composables/use-toast';
+import { IToast } from '@/Interfaces/toast';
 
 export default defineComponent({
   name: 'CreatePost',
@@ -40,7 +41,7 @@ export default defineComponent({
     function triggerAddPost() {
       const result = addPost();
       console.log('triggerAddPost', result);
-      let msg = {};
+      let msg = {} as IToast;
       if (result) {
         msg = {
           severity: 'success', summary: 'Success!', detail: 'Post has successfully Added!', life: 3000,

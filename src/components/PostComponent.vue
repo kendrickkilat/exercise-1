@@ -78,6 +78,7 @@ import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import router from '@/router';
 import useToastSpace from '@/composables/use-toast';
+import { IToast } from '@/Interfaces/toast';
 
 export default defineComponent({
   name: 'Post',
@@ -101,7 +102,7 @@ export default defineComponent({
 
     function triggerEditPost(id:number) {
       const result = editPost(id);
-      let msg = {};
+      let msg = {} as IToast;
       switch (result) {
         case 'no-change':
           msg = {
@@ -127,8 +128,8 @@ export default defineComponent({
       router.push({ name: rn.PDetails, params: { id: props.post.id } });
     }
 
-    function triggerDeletePost(id) {
-      let msg = {};
+    function triggerDeletePost(id:number) {
+      let msg = {} as IToast;
       const result = deletePost(id);
       if (result) {
         msg = {
