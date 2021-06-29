@@ -35,12 +35,11 @@ export default defineComponent({
     const {
       content,
       title,
-      addPost,
+      add,
     } = usePostSpace();
 
     function triggerAddPost() {
-      const result = addPost();
-      console.log('triggerAddPost', result);
+      const result = add();
       let msg = {} as IToast;
       if (result) {
         msg = {
@@ -57,7 +56,7 @@ export default defineComponent({
     return {
       content,
       title,
-      addPost,
+      add,
       triggerAddPost,
     };
   },

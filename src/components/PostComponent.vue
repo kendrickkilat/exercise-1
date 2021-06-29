@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, PropType, ref,
+  defineComponent, PropType, ref,
 } from 'vue';
 import { IPost } from '@/Interfaces/post';
 import usePostSpace from '@/composables/use-post-space';
@@ -89,36 +89,33 @@ export default defineComponent({
   },
   setup(props) {
     const { instantiateToast } = useToastSpace();
-    const toPostDetails = computed(() => ({ name: rn.PDetails, params: { id: props.post.id } }));
     const {
-      deletePost, populateEditFields, title, content, editPost,
+      remove, title, content, edit, findItem,
     } = usePostSpace();
     const editMode = ref(false);
 
     function toggleEditMode(id:number) {
       editMode.value = !editMode.value;
-      populateEditFields(id);
+      const post = findItem(id);
+      title.value = post.title;
+      content.value = post.content;
     }
 
     function triggerEditPost(id:number) {
-      const result = editPost(id);
+      const result = edit(id);
       let msg = {} as IToast;
-      switch (result) {
-        case 'no-change':
-          msg = {
-            severity: 'info', summary: 'Updating Form was not processed', detail: 'No change has been detected', life: 3000,
-          };
-          break;
-        case 'error':
-          msg = {
-            severity: 'error', summary: 'Error Updating Post', detail: 'Title and/or Content is empty', life: 3000,
-          }; break;
-        case 'success':
-          msg = {
-            severity: 'success', summary: 'Success!', detail: 'Post Successfully Updated', life: 3000,
-          };
-          break;
-        default: break;
+
+      if (result.title !== '' && result.content !== '') {
+        msg = {
+          severity: 'success', summary: 'Success!', detail: 'Post Successfully Updated', life: 3000,
+        };
+      } else {
+        msg = {
+          severity: 'error',
+          summary: 'Error Updating Post',
+          detail: 'Title and/or Content is empty',
+          life: 3000,
+        };
       }
       instantiateToast(msg);
       toggleEditMode(id);
@@ -130,7 +127,7 @@ export default defineComponent({
 
     function triggerDeletePost(id:number) {
       let msg = {} as IToast;
-      const result = deletePost(id);
+      const result = remove(id);
       if (result) {
         msg = {
           severity: 'success', summary: 'Success!', detail: 'Post has successfully deleted', life: 3000,
@@ -148,8 +145,7 @@ export default defineComponent({
     return {
       triggerEditPost,
       triggerDeletePost,
-      toPostDetails,
-      editPost,
+      edit,
       title,
       toggleEditMode,
       editMode,

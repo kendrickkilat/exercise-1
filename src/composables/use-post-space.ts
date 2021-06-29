@@ -2,44 +2,38 @@ import { ref } from 'vue';
 import { IPost } from '@/Interfaces/post';
 import useStore from '@/composables/use-store';
 
-export default function usePostSpace() {
+export default function usePost() {
   const { posts } = useStore();
   const title = ref('');
   const content = ref('');
 
-  function findPost(id: number): IPost {
-    return posts.value.find((item) => {
-      console.log(item.id, Number(id));
-      return item.id === Number(id);
-    }) as IPost;
+  function findItem(id: number): IPost {
+    return posts.value.find((item) => item.id === Number(id)) as IPost;
   }
 
-  function findPostIndex(id:number):number|string {
-    let results:number|string = 'not-found';
+  function findIndex(id:number):number {
+    let results = -1;
 
     posts.value.forEach((item, index) => {
-      console.log(item, index);
       if (item.id === id) {
-        console.log('fpostindex: ', index, id);
         results = index;
       }
     });
     return results;
   }
 
-  function deletePost(value: number): boolean {
-    console.log('emit2: ', value, posts.value);
-    const index = findPostIndex(value);
+  function remove(value: number): boolean {
+    const index = findIndex(value);
 
     let result = false;
-    if (typeof (index) === 'number') {
+    if (index >= 0) {
       posts.value.splice(index, 1);
       result = true;
     }
     return result;
   }
 
-  function addPost(): boolean {
+  function add(): boolean {
     const len = posts.value.length;
     let result = false;
 
@@ -52,7 +46,6 @@ export default function usePostSpace() {
     } as IPost;
 
     if (title.value !== '' && content.value !== '') {
-      console.log('posts:length: ', posts.value.length);
       posts.value.unshift(item);
       result = true;
     }
@@ -61,41 +54,24 @@ export default function usePostSpace() {
     return result;
   }
 
-  function populateEditFields(id:number):IPost {
-    const result = findPost(id);
-    title.value = result.title;
-    content.value = result.content;
-    return result;
-  }
-
-  function editPost(id: number): string {
-    console.log('editPost entered', id, title.value);
-    let result = 'error';
-    const temp = findPost(id);
-    const index = findPostIndex(id);
+  function edit(id: number):IPost {
+    const temp = findItem(id);
+    const index = findIndex(id);
     if (title.value !== '' && content.value !== '') {
-      if (temp.title === title.value && temp.content === content.value) {
-        result = 'no-change';
-      } else {
-        temp.title = title.value;
-        temp.content = content.value;
-        if (typeof (index) === 'number') {
-          posts.value.splice(index, 1, temp);
-          result = 'success';
-        }
-      }
+      temp.title = title.value;
+      temp.content = content.value;
+      posts.value.splice(index, 1, temp);
     }
-    return result;
+    return temp;
   }
 
   return {
     posts,
-    addPost,
-    deletePost,
+    add,
+    remove,
     title,
     content,
-    findPost,
-    editPost,
-    populateEditFields,
+    findItem,
+    edit,
   };
 }

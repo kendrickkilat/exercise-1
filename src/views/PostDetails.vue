@@ -71,7 +71,7 @@ import {
 } from 'vue';
 // import { IPost } from '@/Interfaces/post';
 import rn from '@/enums/routenames';
-import usePostSpace from '@/composables/use-post-space';
+import usePost from '@/composables/use-post-space';
 import formatDate from '@/composables/use-date-formatter';
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
@@ -100,36 +100,24 @@ export default defineComponent({
     const editMode = ref(false);
     const goToNewsFeed = computed(() => ({ name: rn.Newsfeed }));
     const {
-      findPost, editPost, deletePost, title, content,
-    } = usePostSpace();
+      findItem, edit, remove, title, content,
+    } = usePost();
 
-    const post = findPost(props.id);
-    title.value = post.title;
-    content.value = post.content;
+    const post = findItem(props.id);
 
     function toggleEditMode() {
       editMode.value = !editMode.value;
+      title.value = post.title;
+      content.value = post.content;
     }
 
     function triggerEditPost(id:number) {
-      const result = editPost(id);
+      const result = edit(id);
       let msg = {} as IToast;
-      switch (result) {
-        case 'no-change':
-          msg = {
-            severity: 'info', summary: 'Updating Form was not processed', detail: 'No change has been detected', life: 3000,
-          };
-          break;
-        case 'error':
-          msg = {
-            severity: 'error', summary: 'Error Updating Post', detail: 'Title and/or Content is empty', life: 3000,
-          }; break;
-        case 'success':
-          msg = {
-            severity: 'success', summary: 'Success!', detail: 'Post Successfully Updated', life: 3000,
-          };
-          break;
-        default: break;
+      if (result) {
+        msg = {
+          severity: 'success', summary: 'Success!', detail: 'Post Successfully Updated', life: 3000,
+        };
       }
       instantiateToast(msg);
       toggleEditMode();
@@ -137,7 +125,7 @@ export default defineComponent({
 
     function triggerDeletePost(id:number) {
       let msg = {} as IToast;
-      const result = deletePost(id);
+      const result = remove(id);
       if (result) {
         msg = {
           severity: 'success', summary: 'Success!', detail: 'Post has successfully deleted', life: 3000,
@@ -155,12 +143,12 @@ export default defineComponent({
     return {
       post,
       goToNewsFeed,
-      findPost,
+      findItem,
       formatDate,
       editMode,
       toggleEditMode,
-      editPost,
-      deletePost,
+      edit,
+      remove,
       triggerEditPost,
       title,
       content,
