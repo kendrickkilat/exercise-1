@@ -43,14 +43,14 @@
           <Button label="Cancel"
           icon="pi pi-exclamation-circle"
           class = "p-button-warning p-button-text p-mr-2 p-mb-2"
-          @click="toggleEditMode(post.id)"/>
+          @click="toggleEditMode()"/>
         </span>
 
         <span v-if="!editMode">
           <Button label="Edit"
           icon="pi pi-pencil"
           class = "p-button-text p-mr-2 p-mb-2"
-          @click="toggleEditMode(post.id)" />
+          @click="toggleEditMode()" />
         </span>
 
         <Button label="Delete"
@@ -69,7 +69,7 @@
 import {
   computed, defineComponent, ref,
 } from 'vue';
-import { IPost } from '@/Interfaces/post';
+// import { IPost } from '@/Interfaces/post';
 import rn from '@/enums/routenames';
 import usePostSpace from '@/composables/use-post-space';
 import formatDate from '@/composables/use-date-formatter';
@@ -100,14 +100,15 @@ export default defineComponent({
     const editMode = ref(false);
     const goToNewsFeed = computed(() => ({ name: rn.Newsfeed }));
     const {
-      findPost, editPost, populateEditFields, deletePost, title, content,
+      findPost, editPost, deletePost, title, content,
     } = usePostSpace();
-    const post = ref<IPost>(findPost(props.id));
 
-    function toggleEditMode(id:number) {
+    const post = findPost(props.id);
+    title.value = post.title;
+    content.value = post.content;
+
+    function toggleEditMode() {
       editMode.value = !editMode.value;
-      const result = populateEditFields(id);
-      console.log('populateFields successful', result);
     }
 
     function triggerEditPost(id:number) {
@@ -131,7 +132,7 @@ export default defineComponent({
         default: break;
       }
       instantiateToast(msg);
-      toggleEditMode(id);
+      toggleEditMode();
     }
 
     function triggerDeletePost(id:number) {

@@ -20,6 +20,7 @@ export default function usePostSpace() {
     posts.value.forEach((item, index) => {
       console.log(item, index);
       if (item.id === id) {
+        console.log('fpostindex: ', index, id);
         results = index;
       }
     });
@@ -72,7 +73,7 @@ export default function usePostSpace() {
     let result = 'error';
     const temp = findPost(id);
     const index = findPostIndex(id);
-    if (title.value !== '' && content.value === '') {
+    if (title.value !== '' && content.value !== '') {
       if (temp.title === title.value && temp.content === content.value) {
         result = 'no-change';
       } else {
